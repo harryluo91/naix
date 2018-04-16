@@ -1,5 +1,14 @@
 @import './variables.scss';
 
 body {
+  height: 100vh;
   background-color: $body-background-color;
+}
+
+#root {
+  height: 100%;
+}
+
+#main {
+  height: 100%;
 }

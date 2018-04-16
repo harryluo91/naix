@@ -1,55 +1,9 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { Link } from "react-router-dom";
-import { Grid } from 'material-ui';
-import { Form, Field, Text } from 'react-form';
-import { TextField } from 'material-ui';
-import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-
-const validate = value => ({
-  error: !value ? 'Field cannot be empty' : null
-})
-
-const CustomText = props => (
-
-  // Use the form field and your custom input together to create your very own input!
-  <Field validate={validate} field={props.field}>
-    { fieldApi => {
-
-      // Remember to pull off everything you dont want ending up on the <input>
-      // thats why we pull off onChange, onBlur, and field
-      // Note, the ...rest is important because it allows you to pass any
-      // additional fields to the internal <input>.
-      const { onChange, onBlur, field, ...rest } = props
-
-      const { value, error, warning, success, setValue, setTouched } = fieldApi
-
-      return (
-        <FormControl className="form-field" error={ !!error }>
-          <InputLabel htmlFor="username">Username</InputLabel>
-          <Input
-            {...rest}
-            value={value || ''}
-            onChange={e => {
-              setValue(e.target.value)
-              if (onChange) {
-                onChange(e.target.value, e)
-              }
-            }}
-            onBlur={e => {
-              setTouched()
-              if (onBlur) {
-                onBlur(e)
-              }
-            }}
-          />
-          {error && <FormHelperText id="name-error-text">{error}</FormHelperText>}
-        </FormControl>
-      )
-    }}
-  </Field>
-)
+import { Grid, Paper, Button } from 'material-ui';
+import { Form } from 'react-form';
+import TextInput from '../../components/form/textInput';
 
 class LoginContainer extends Component {
   constructor() {
@@ -61,9 +15,9 @@ class LoginContainer extends Component {
     }
   }
 
-  handleChange(event) {
-    this.setState({ username: event.target.value });
-  }
+  // handleChange(event) {
+  //   this.setState({ username: event.target.value });
+  // }
 
   handleSubmit(submittedValues) {
     console.log(submittedValues);
@@ -72,21 +26,43 @@ class LoginContainer extends Component {
   render() {
     return (
       <div className="login-container">
-        <div className="login-form">
-          <Form onSubmit={ this.handleSubmit }>
-            {
-              formApi => (
-                <form onSubmit={ formApi.submitForm } id="form1" className="mb-4">
-                  <CustomText field="username" id="username" />
-                  {/* <label htmlFor="hello">Hello World</label>
-                  <Text field="hello" id="hello" validate={validate} /> */}
-                  <button type="submit" className="btn btn-primary">
-                    Submit
-                  </button>
-                </form>
-              )
-            }
-          </Form>
+        <div className="login-container__login-form">
+          <Grid container xs={12} justify="center">
+            <Grid item xs={6}>
+            <Paper>
+              <Form onSubmit={ this.handleSubmit }>
+                {
+                  formApi => (
+                    <form onSubmit={ formApi.submitForm } id="form1" className="mb-4">
+                      <Grid container spacing={16} alignItems="center" direction="column">
+                        <Grid item xs={12}>
+                          <TextInput
+                            field="username"
+                            id="username"
+                            displayName="Username"
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <TextInput
+                            field="password"
+                            id="password"
+                            displayName="Password"
+                            type="password"
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Button type="submit" className="btn btn-primary" variant="raised" color="primary">
+                            Submit
+                          </Button>
+                        </Grid>
+                      </Grid>             
+                    </form>
+                  )
+                }
+              </Form>
+            </Paper>
+            </Grid>
+          </Grid>
         </div>
       </div>
     );

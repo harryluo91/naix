@@ -9,7 +9,7 @@ import PrivateRoute from './components/hoc/privateRoute';
 import AppSelect from './components/appSelect/appSelect';
 
 const Routes = () => (
-    <div>
+    <div id="main">
         <Route exact path="/" component={Login} />
         <PrivateRoute path="/app-select" component={AppSelect} />
         <PrivateRoute path="/live-dashboard" component={LiveDashboard} />
