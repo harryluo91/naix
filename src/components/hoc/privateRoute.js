@@ -10,6 +10,12 @@ class PrivateRoute extends Component {
       isAuthed: isAuthed()
     };
   }
+
+  componentDidMount() {
+    this.setState({
+      isAuthed: isAuthed()
+    })
+  }
   
   render() {
     const { component: Component, ...rest } = this.props;
