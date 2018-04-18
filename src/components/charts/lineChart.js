@@ -34,16 +34,16 @@ class LineChart extends Component {
       lineChart: Echarts.init(document.getElementById(chartName))
     }, () => {
       this.state.lineChart.setOption(defaultOptions);
-      window.addEventListener("resize", this.resizeChart(this.state.lineChart));
+      window.addEventListener("resize", this.resizeChart.bind(this));
     })
   }
 
   componentWillUnmount() {
-    window.addEventListener("resize", this.resizeChart(this.state.lineChart));
+    window.removeEventListener("resize", this.resizeChart.bind(this));
   }
 
-  resizeChart(chart) {
-    chart.resize();
+  resizeChart() {
+    this.state.lineChart.resize();
   }
 
   render() {

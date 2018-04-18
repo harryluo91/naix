@@ -38,16 +38,16 @@ class BarChart extends Component {
       barChart: Echarts.init(document.getElementById(chartName))
     }, () => {
       this.state.barChart.setOption(defaultOptions);
-      window.addEventListener("resize", this.resizeChart(this.state.barChart));
+      window.addEventListener("resize", this.resizeChart.bind(this));
     })
   }
 
   componentWillUnmount() {
-    window.addEventListener("resize", this.resizeChart(this.state.barChart));
+    window.addEventListener("resize", this.resizeChart.bind(this));
   }
 
-  resizeChart(chart) {
-    chart.resize();
+  resizeChart() {
+    this.state.barChart.resize();
   }
 
   render() {
