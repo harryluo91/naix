@@ -1,0 +1,12 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.data-center-page-wrapper {
+  flex-grow: 1;
+  width: calc(100% - #{$perm-drawer-width});
+  margin-left: $perm-drawer-width;
+
+  @include sm {
+      margin-left: 0px;
+  }
+}

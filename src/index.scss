@@ -1,4 +1,5 @@
 @import 'styles/global.scss';
+@import 'styles/mixins.scss';
 
 @import 'containers/loginContainer/loginContainer.scss';
 @import 'containers/appBarContainer/appBarContainer.scss';
@@ -6,3 +7,4 @@
 @import 'containers/sensorDetailsContainer/sensorDetailsContainer.scss';
 
 @import 'components/appSelect/appSelect.scss';
+@import 'components/dataCenterPageWrapper/dataCenterPageWrapper.scss';

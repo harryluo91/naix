@@ -3,9 +3,11 @@ import { Link, Route } from "react-router-dom";
 import { Grid, Hidden, Drawer, withStyles } from 'material-ui';
 import autobind from 'react-autobind';
 
+import AppBarContainer from '../appBarContainer/appBarContainer';
 import SideBarContainer from '../sideBarContainer/sideBarContainer';
 import SensorDetailsContainer from '../sensorDetailsContainer/sensorDetailsContainer';
-import AppBarContainer from '../appBarContainer/appBarContainer';
+import AdvancedContainer from '../advancedContainer/advancedContainer';
+import DataSummaryContainer from '../dataSummaryContainer/dataSummaryContainer';
 
 const style = {
   drawerPaperPerm: {
@@ -57,7 +59,7 @@ class DataCenterContainer extends Component {
   }
 
   render() {
-    const { classes } = this.props; 
+    const { classes, match, history } = this.props; 
     return (
       <div className="data-center">
         <AppBarContainer handleDrawerToggle={this.handleDrawerToggle}/>
@@ -68,7 +70,7 @@ class DataCenterContainer extends Component {
               open={this.state.sideNavOpen}
               onClose={this.handleDrawerToggle}
             >
-              <SideBarContainer sensors={ sensors }></SideBarContainer>
+              <SideBarContainer sensors={ sensors } history={ history }></SideBarContainer>
             </Drawer>
           </Hidden>
           <Hidden xsDown>
@@ -78,14 +80,13 @@ class DataCenterContainer extends Component {
                 paper: classes.drawerPaperPerm
               }}
             >
-              <SideBarContainer sensors={ sensors }></SideBarContainer>
+              <SideBarContainer sensors={ sensors } history={ history }></SideBarContainer>
             </Drawer>
           </Hidden>
-          {
-            routes.map((route, index) => (
-              <Route key={index} path={route} component={SensorDetailsContainer}></Route>
-            ))
-          }
+          <Route exact path={`${match.url}`} component={DataSummaryContainer}></Route>
+          <Route path={`${match.url}/summary`} component={DataSummaryContainer}></Route>
+          <Route path={`${match.url}/advanced`} component={AdvancedContainer}></Route>
+          <Route path={`${match.url}/sensor/:sensorId`} component={SensorDetailsContainer}></Route>
         </div>
       </div>
     );

@@ -21,10 +21,14 @@ class LoginContainer extends Component {
     const loggedInUserId = storageManager.createOrFetchStorage('userId', STORAGE_TYPES.session);
     const { history } = this.props;
     if (submittedValues.username === 'test' && submittedValues.password === 'test') {
-      loggedInUserId.set('test');
-      setTimeout(() => {
-        history.push('/app-select');
-      }, 1000)
+      if (!loggedInUserId.get()) {
+        loggedInUserId.set('test');
+      }
+      
+      // setTimeout(() => {
+      //   history.push('/app-select');
+      // }, 1000)
+      history.push('/app-select');
     }
   }
 

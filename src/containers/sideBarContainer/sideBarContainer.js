@@ -35,7 +35,7 @@ class SideBarContainer extends Component {
     return (
       <div className="side-bar">
         <List component="nav">
-          <ListItem button onClick={ this.handleNavigation(SIDE_BAR_LINKS.SUMMARY).bind(this) }>
+          <ListItem button onClick={ this.handleNavigation(SIDE_BAR_LINKS.SUMMARY) }>
             <ListItemText primary="Summary" />
           </ListItem>
           <ListItem button onClick={this.handleListToggle}>
@@ -46,7 +46,7 @@ class SideBarContainer extends Component {
             <List component="div" disablePadding>
               {
                 sensors.map((el, i) => (
-                  <ListItem button onClick={ this.handleNavigation(`/data-center/sensors/${el.id}`) } key={i}>
+                  <ListItem button onClick={ this.handleNavigation(`/data-center/sensor/${el.id}`) } key={i}>
                     <ListItemText primary={el.name} />
                   </ListItem>
                ))
