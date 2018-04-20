@@ -27,7 +27,6 @@ class SideBarContainer extends Component {
   handleNavigation = (pathname) => (e) => {
     const { history } = this.props;
     history.push(pathname);
-    console.log(pathname)
   }
 
   render() {
