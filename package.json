@@ -7,6 +7,7 @@
     "@devexpress/dx-react-grid": "^1.1.2",
     "@devexpress/dx-react-grid-material-ui": "^1.1.2",
     "@material-ui/icons": "^1.0.0-beta.42",
+    "ajv": "^6.4.0",
     "axios": "^0.18.0",
     "echarts": "^4.0.4",
     "material-ui": "^1.0.0-beta.41",

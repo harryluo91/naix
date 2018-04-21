@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Button, Grid, withStyles } from 'material-ui';
+import autoBind from 'react-autobind';
 
 import DataCenterPageWrapper from '../../components/dataCenterPageWrapper/dataCenterPageWrapper';
 import SectionHeader from '../../components/sectionHeader/sectionHeader';
@@ -17,7 +18,8 @@ const style = {
 
 class SensorDetailsContainer extends Component {
   constructor() {
-    super()
+		super();
+		autoBind(this);
     this.state = {
       sensorId: null,
       currentDate: null

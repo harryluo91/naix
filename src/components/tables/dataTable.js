@@ -76,7 +76,6 @@ class DataTable extends Component {
           <IntegratedSorting />
           <IntegratedPaging />
           <Table tableComponent={TableComponent} rowComponent={TableRow} />
-          )}/>
           <TableHeaderRow showSortingControls />
           <PagingPanel />
         </Grid>
