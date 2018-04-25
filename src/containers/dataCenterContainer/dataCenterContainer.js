@@ -9,20 +9,6 @@ import SensorDetailsContainer from '../sensorDetailsContainer/sensorDetailsConta
 import AdvancedContainer from '../advancedContainer/advancedContainer';
 import DataSummaryContainer from '../dataSummaryContainer/dataSummaryContainer';
 
-const style = {
-  drawerPaperPerm: {
-    position: 'fixed',
-    top: '64px',
-    width: '200px'
-  }
-}
-
-const routes = [
-  '/data-center/summary',
-  '/data-center/sensor/:sensorId',
-  '/data-center/advanced'
-]
-
 const sensors = [
   {
     name: 'Sensor 1',
@@ -59,30 +45,12 @@ class DataCenterContainer extends Component {
   }
 
   render() {
-    const { classes, match, history } = this.props; 
+    const { match } = this.props; 
     return (
       <div className="data-center">
         <AppBarContainer handleDrawerToggle={this.handleDrawerToggle}/>
         <div className="data-center__body">
-          <Hidden smUp>
-            <Drawer
-              variant="temporary"
-              open={this.state.sideNavOpen}
-              onClose={this.handleDrawerToggle}
-            >
-              <SideBarContainer sensors={ sensors } history={ history }></SideBarContainer>
-            </Drawer>
-          </Hidden>
-          <Hidden xsDown>
-            <Drawer
-              variant="permanent"
-              classes={{
-                paper: classes.drawerPaperPerm
-              }}
-            >
-              <SideBarContainer sensors={ sensors } history={ history }></SideBarContainer>
-            </Drawer>
-          </Hidden>
+          <SideBarContainer handleDrawerToggle={this.handleDrawerToggle} sideNavOpen={this.state.sideNavOpen} type="dataCenter" sensors={ sensors }></SideBarContainer>
           <Route exact path={`${match.url}`} component={DataSummaryContainer}></Route>
           <Route path={`${match.url}/summary`} component={DataSummaryContainer}></Route>
           <Route path={`${match.url}/advanced`} component={AdvancedContainer}></Route>
@@ -93,4 +61,4 @@ class DataCenterContainer extends Component {
   }
 }
 
-export default withStyles(style)(DataCenterContainer);
+export default DataCenterContainer;
