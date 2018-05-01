@@ -4,87 +4,76 @@ import { Grid, Paper } from 'material-ui';
 import autoBind from 'react-autobind';
 import LineChart from '../../components/charts/lineChart';
 import BarChart from '../../components/charts/barChart';
-import fdhImg from '../../static/fdh.png';
 import SectionDivider from '../../components/sectionDivider/sectionDivider';
 import SectionHeader from '../../components/sectionHeader/sectionHeader';
+import MapContainer from '../mapContainer/mapContainer';
+import AppBarContainer from '../appBarContainer/appBarContainer';
+import { BAIDU_MAP_API_KEY } from '../../utils/const';
 
-const sensors = [
-	{
-		name: "Sensor 1",
-		value: Math.floor(Math.random() * 100)
-	},
-	{
-		name: "Sensor 2",
-		value: Math.floor(Math.random() * 100)
-	},
-	{
-		name: "Sensor 3",
-		value: Math.floor(Math.random() * 100)
-	},
-	{
-		name: "Sensor 4",
-		value: Math.floor(Math.random() * 100)
-	}
-]
-
-let counter = null;
-
+const baiduMapsApiUrl = `http://api.map.baidu.com/api?v=3.0&ak=${BAIDU_MAP_API_KEY}&callback=mapsApiLoaded`;
+const FDH_GOOGLE_COORDS = {
+  x: 109.230414,
+  y: 35.391788
+}
 class LiveDashboardContainer extends Component {
 	constructor() {
 		super()
 		autoBind(this)
 		this.state = {
-			currentSensor: 0
+      mapsApiLoaded: false
 		}
 	}
 
 	componentDidMount() {
-		counter = setInterval(() => {
-			let tmp = this.state.currentSensor;
-			if (tmp <= 2) {
-				this.setState({
-					currentSensor: this.state.currentSensor + 1
-				})
-			} else {
-				this.setState({
-					currentSensor: 0
-				})
+    ((d, s, id) => {
+			if (d.getElementById(id)) {
+				this.mapsApiLoaded();
+				return;
 			}
-		}, 2000);
+			window.mapsApiLoaded = this.mapsApiLoaded;
+			const fjs = d.getElementsByTagName(s)[0];
+			const js = d.createElement(s);
+			js.id = id;
+			js.src = baiduMapsApiUrl;
+			fjs.parentNode.insertBefore(js, fjs);
+    })(document, 'script', 'baidu-map-api');
 	}
 
 	componentWillUnmount() {
-    clearInterval(counter)
+  }
+
+  mapsApiLoaded() {
+    this.setState({
+      mapsApiLoaded: true
+    })
   }
 
   render() {
-		const	{ currentSensor } = this.state;
+    const { mapsApiLoaded } = this.state;
     return (
       <div className="live-dashboard">
-        <Grid container style={{height: "100%"}} spacing={16} justify="center" alignItems="center">
-          <Grid item xs={12} sm={6}>
-						<img src={fdhImg} width="100%"></img>
+        <AppBarContainer />
+        <div className="live-dashboard__body">
+          <Grid container spacing={24} justify="center" alignItems="center">
+            <Grid item xs={12} sm={8}>
+              {
+                mapsApiLoaded &&
+                  <Paper>
+                    <div id="live-dashboard-map">
+                      <MapContainer
+                        mapNodeId="live-dashboard-map"
+                        centerX={FDH_GOOGLE_COORDS.x}
+                        centerY={FDH_GOOGLE_COORDS.y}
+                      />
+                    </div>
+                  </Paper>
+              }
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              Data
+            </Grid>
           </Grid>
-          <Grid item style={{height: "100%"}} xs={12} sm={6}>
-						<Grid container style={{height: "100%"}} spacing={16}>
-							<Grid item style={{height: "100px"}} xs={12}>
-								<SectionHeader headerText={sensors[currentSensor]['name']} />
-							</Grid>
-							<Grid item xs={12}>
-							<span>Value 1: </span><span>{sensors[currentSensor]['value']}</span>
-							</Grid>
-							<Grid item xs={12}>
-							<span>Value 2: </span><span>{sensors[currentSensor]['value']}</span>
-							</Grid>
-							<Grid item xs={12}>
-							<span>Value 3: </span><span>{sensors[currentSensor]['value']}</span>
-							</Grid>
-							<Grid item xs={12}>
-							<span>Value 4: </span><span>{sensors[currentSensor]['value']}</span>
-							</Grid>
-						</Grid>
-          </Grid>
-        </Grid>
+        </div>
       </div>
     );
   }

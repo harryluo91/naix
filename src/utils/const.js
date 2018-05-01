@@ -1,3 +1,5 @@
+const BAIDU_MAP_API_KEY = 'kpMGimpLZNhm2r3WDjB7Gg8zWgfM8E8G';
+
 const fakeTableData = [
 	{
 		"date": "May 10, 2018",
@@ -602,5 +604,6 @@ const fakeTableData = [
 ];
 
 export {
-  fakeTableData
+  fakeTableData,
+  BAIDU_MAP_API_KEY
 }
