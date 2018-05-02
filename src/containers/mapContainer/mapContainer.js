@@ -4,14 +4,16 @@ import { Grid, Paper } from 'material-ui';
 import autoBind from 'react-autobind';
 import PropTypes from 'prop-types';
 
+// import MapMarker from '../../components/map/mapMarker';
+
 class MapContainer extends Component {
 	constructor() {
 		super()
 		autoBind(this)
 		this.state = {
-      map: null
+      map: null,
 		}
-	}
+  }
 
 	componentDidMount() {
     this.initMap();
@@ -36,6 +38,17 @@ class MapContainer extends Component {
         map.setCenter(data.points[0]);
       });
       this.setState({ map });
+      this.initMarkers(data.points[0]);
+    })
+  }
+
+  initMarkers(pos) {
+    const { map } = this.state;
+    import ('../../components/map/mapMarker').then((module) => {
+      if (map) {
+        const marker = new module.MapMarker(pos);
+        map.addOverlay(marker);
+      }
     })
   }
 
