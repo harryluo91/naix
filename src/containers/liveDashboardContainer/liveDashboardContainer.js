@@ -15,24 +15,32 @@ const CENTER_COORDS = {
   x: 109.230414,
   y: 35.391788
 }
-const SENSOR_COORDS = [
+const SENSOR_INFO = [
   {
     id: 1,
+    name: 'Sensor 1',
+    value: 100,
     x: 109.230414,
     y: 35.391788
   },
   {
     id: 2,
+    name: 'Sensor 2',
+    value: 200,
     x: 109.232959,
     y: 35.392693
   },
   {
     id: 3,
+    name: 'Sensor 3',
+    value: 300,
     x: 109.225492, 
     y: 35.391713
   },
   {
     id: 4,
+    name: 'Sensor 4',
+    value: 400,
     x: 109.229483, 
     y: 35.386324
   }
@@ -43,8 +51,9 @@ class LiveDashboardContainer extends Component {
 		autoBind(this)
 		this.state = {
       mapsApiLoaded: false,
-      mapFinishedLoading: false
-		}
+      currentSensor: {}
+    }
+    this.mapLooper = null;
 	}
 
 	componentDidMount() {
@@ -60,9 +69,13 @@ class LiveDashboardContainer extends Component {
 			js.src = baiduMapsApiUrl;
 			fjs.parentNode.insertBefore(js, fjs);
     })(document, 'script', 'baidu-map-api');
-	}
+    this.setState({
+      currentSensor: SENSOR_INFO[0]
+    })
+  }
 
 	componentWillUnmount() {
+    clearInterval(this.mapLooper);
   }
 
   mapsApiLoaded() {
@@ -71,14 +84,29 @@ class LiveDashboardContainer extends Component {
     })
   }
 
-  mapDataLoaded() {
-    this.setState({
-      mapFinishedLoading: true
-    })
+  startLooping(markers) {
+    let currentMarkerIndex = 0;
+    let prevMarkerIndex = -1;
+    this.mapLooper = setInterval(() => {
+      if (currentMarkerIndex === markers.length) {
+        currentMarkerIndex = 0;
+        prevMarkerIndex = markers.length - 1;
+      }
+      const currentSensor = SENSOR_INFO.find((el) => {
+        return el.id === markers[currentMarkerIndex].sensorId();
+      });
+      this.setState({
+        currentSensor
+      })
+      markers[currentMarkerIndex].setActive();
+      markers[prevMarkerIndex] && markers[prevMarkerIndex].setNonActive();
+      currentMarkerIndex += 1;
+      prevMarkerIndex = currentMarkerIndex - 1;
+    }, 5000);
   }
 
   render() {
-    const { mapsApiLoaded, mapFinishedLoading } = this.state;
+    const { mapsApiLoaded, currentSensor } = this.state;
     return (
       <div className="live-dashboard">
         <AppBarContainer />
@@ -93,16 +121,15 @@ class LiveDashboardContainer extends Component {
                         mapNodeId="live-dashboard-map"
                         centerX={CENTER_COORDS.x}
                         centerY={CENTER_COORDS.y}
-                        markerCoords={SENSOR_COORDS}
-                        mapDataLoaded={this.mapDataLoaded}
-                        mapFinishedLoading={mapFinishedLoading}
+                        markerCoords={SENSOR_INFO}
+                        startLooping={this.startLooping}
                       />
                     </div>
                   </Paper>
               }
             </Grid>
             <Grid item xs={12} sm={4}>
-              Data
+              {currentSensor.name}
             </Grid>
           </Grid>
         </div>

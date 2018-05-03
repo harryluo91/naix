@@ -14,17 +14,10 @@ class MapContainer extends Component {
       map: null,
       markers: [],
     }
-    this.markerLooper = null;
   }
 
 	componentDidMount() {
     this.initMap();
-  }
-  
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (!prevProps.mapFinishedLoading && this.props.mapFinishedLoading) {
-      this.startLooping();
-    }
   }
 
 	componentWillUnmount() {
@@ -51,8 +44,8 @@ class MapContainer extends Component {
   }
 
   initMarkers() {
-    const { map, markers } = this.state;
-    const { markerCoords, mapDataLoaded } = this.props;
+    const { map } = this.state;
+    const { markerCoords, startLooping } = this.props;
     const promises = [];
     import ('../../components/map/mapMarker').then((module) => {
       if (map) {
@@ -61,7 +54,7 @@ class MapContainer extends Component {
           const markerPos = new window.BMap.Point(item.x, item.y);
           const promise = new Promise((resolve, reject) => {
             markerCoordsConvertor.translate([markerPos], 3, 5, (data) => {
-              const marker = new module.MapMarker(data.points[0]);
+              const marker = new module.MapMarker(data.points[0], item.id);
               map.addOverlay(marker);
               resolve(marker);
             })
@@ -71,26 +64,10 @@ class MapContainer extends Component {
         Promise.all(promises).then((data) => {
           this.setState({
             markers: data
-          }, () => mapDataLoaded());
+          }, () => startLooping(data));
         })
       }
     })
-  }
-
-  startLooping() {
-    const { markers } = this.state;
-    let currentMarkerIndex = 0;
-    let prevMarkerIndex = -1;
-    this.mapLooper = setInterval(() => {
-      if (currentMarkerIndex === markers.length) {
-        currentMarkerIndex = 0;
-        prevMarkerIndex = markers.length - 1;
-      }
-      markers[currentMarkerIndex].setActive();
-      markers[prevMarkerIndex] && markers[prevMarkerIndex].setNonActive();
-      currentMarkerIndex += 1;
-      prevMarkerIndex = currentMarkerIndex - 1;
-    }, 2000)
   }
 
   render() {
@@ -105,8 +82,7 @@ MapContainer.propTypes = {
   centerX: PropTypes.number.isRequired,
   centerY: PropTypes.number.isRequired,
   markerCoords: PropTypes.array.isRequired,
-  mapDataLoaded: PropTypes.func.isRequired,
-  mapFinishedLoading: PropTypes.bool.isRequired
+  startLooping: PropTypes.func.isRequired
 }
 
 export default MapContainer;

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 // import { Route, Link, Redirect } from "react-router-dom";
 
-const MapMarker = function(center) {
+const MapMarker = function(center, sensorId) {
   this._center = center;
   this._length = 44;
+  this._sensorId = sensorId;
 }
 
 MapMarker.prototype = new window.BMap.Overlay();
@@ -43,6 +44,10 @@ MapMarker.prototype.setNonActive = function() {
   pinElement.className = "pin non-active";
   let pulseElement = this._div.lastElementChild;
   this._div.removeChild(pulseElement);
+}
+
+MapMarker.prototype.sensorId = function() {
+  return this._sensorId;
 }
 
 export {MapMarker};
