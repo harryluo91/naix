@@ -11,16 +11,39 @@ import AppBarContainer from '../appBarContainer/appBarContainer';
 import { BAIDU_MAP_API_KEY } from '../../utils/const';
 
 const baiduMapsApiUrl = `http://api.map.baidu.com/api?v=3.0&ak=${BAIDU_MAP_API_KEY}&callback=mapsApiLoaded`;
-const FDH_GOOGLE_COORDS = {
+const CENTER_COORDS = {
   x: 109.230414,
   y: 35.391788
 }
+const SENSOR_COORDS = [
+  {
+    id: 1,
+    x: 109.230414,
+    y: 35.391788
+  },
+  {
+    id: 2,
+    x: 109.232959,
+    y: 35.392693
+  },
+  {
+    id: 3,
+    x: 109.225492, 
+    y: 35.391713
+  },
+  {
+    id: 4,
+    x: 109.229483, 
+    y: 35.386324
+  }
+]
 class LiveDashboardContainer extends Component {
 	constructor() {
 		super()
 		autoBind(this)
 		this.state = {
-      mapsApiLoaded: false
+      mapsApiLoaded: false,
+      mapFinishedLoading: false
 		}
 	}
 
@@ -48,8 +71,14 @@ class LiveDashboardContainer extends Component {
     })
   }
 
+  mapDataLoaded() {
+    this.setState({
+      mapFinishedLoading: true
+    })
+  }
+
   render() {
-    const { mapsApiLoaded } = this.state;
+    const { mapsApiLoaded, mapFinishedLoading } = this.state;
     return (
       <div className="live-dashboard">
         <AppBarContainer />
@@ -62,8 +91,11 @@ class LiveDashboardContainer extends Component {
                     <div id="live-dashboard-map">
                       <MapContainer
                         mapNodeId="live-dashboard-map"
-                        centerX={FDH_GOOGLE_COORDS.x}
-                        centerY={FDH_GOOGLE_COORDS.y}
+                        centerX={CENTER_COORDS.x}
+                        centerY={CENTER_COORDS.y}
+                        markerCoords={SENSOR_COORDS}
+                        mapDataLoaded={this.mapDataLoaded}
+                        mapFinishedLoading={mapFinishedLoading}
                       />
                     </div>
                   </Paper>

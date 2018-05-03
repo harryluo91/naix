@@ -12,12 +12,20 @@ class MapContainer extends Component {
 		autoBind(this)
 		this.state = {
       map: null,
-		}
+      markers: [],
+    }
+    this.markerLooper = null;
   }
 
 	componentDidMount() {
     this.initMap();
-	}
+  }
+  
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (!prevProps.mapFinishedLoading && this.props.mapFinishedLoading) {
+      this.startLooping();
+    }
+  }
 
 	componentWillUnmount() {
     this.state.map.removeEventListener('resize');
@@ -38,18 +46,67 @@ class MapContainer extends Component {
         map.setCenter(data.points[0]);
       });
       this.setState({ map });
-      this.initMarkers(data.points[0]);
+      this.initMarkers();
     })
   }
 
-  initMarkers(pos) {
-    const { map } = this.state;
+  initMarkers() {
+    const { map, markers } = this.state;
+    const { markerCoords, mapDataLoaded } = this.props;
+    const promises = [];
     import ('../../components/map/mapMarker').then((module) => {
       if (map) {
-        const marker = new module.MapMarker(pos);
-        map.addOverlay(marker);
+        const markerCoordsConvertor = new window.BMap.Convertor();
+        markerCoords.forEach((item) => {
+          const markerPos = new window.BMap.Point(item.x, item.y);
+          const promise = new Promise((resolve, reject) => {
+            markerCoordsConvertor.translate([markerPos], 3, 5, (data) => {
+              const marker = new module.MapMarker(data.points[0]);
+              map.addOverlay(marker);
+              resolve(marker);
+            })
+          });
+          promises.push(promise);
+        });
+        Promise.all(promises).then((data) => {
+          this.setState({
+            markers: data
+          }, () => mapDataLoaded());
+        })
       }
+      // if (map) {
+      //   const markerCoordsConvertor = new window.BMap.Convertor();
+      //   markerCoords.forEach((item) => {
+      //     const markerPos = new window.BMap.Point(item.x, item.y);
+      //     markerCoordsConvertor.translate([markerPos], 3, 5, (data) => {
+      //       let markersCopy = this.state.markers;
+      //       const marker = Object.create(new module.MapMarker(data.points[0]));
+      //       markersCopy = markersCopy.concat([marker]);
+      //       map.addOverlay(marker);
+      //       this.setState({
+      //         markers: markersCopy
+      //       })
+      //     })
+      //   }, this);
+      //   mapDataLoaded();
+      // }
     })
+  }
+
+  startLooping() {
+    const { markers } = this.state;
+    let currentMarkerIndex = 0;
+    let prevMarkerIndex = 0;
+    this.mapLooper = setInterval(() => {
+      if (currentMarkerIndex === markers.length) {
+        currentMarkerIndex = 0;
+        prevMarkerIndex = markers.length - 1;
+      }
+      markers[currentMarkerIndex].setActive.bind(this)();
+      // markers[prevMarkerIndex].setNonActive();
+      currentMarkerIndex += 1;
+      prevMarkerIndex = currentMarkerIndex - 1;
+    }, 2000)
   }
 
   render() {
@@ -60,9 +117,12 @@ class MapContainer extends Component {
 }
 
 MapContainer.propTypes = {
-  mapNodeId: PropTypes.string,
-  centerX: PropTypes.number,
-  centerY: PropTypes.number
+  mapNodeId: PropTypes.string.isRequired,
+  centerX: PropTypes.number.isRequired,
+  centerY: PropTypes.number.isRequired,
+  markerCoords: PropTypes.array.isRequired,
+  mapDataLoaded: PropTypes.func.isRequired,
+  mapFinishedLoading: PropTypes.bool.isRequired
 }
 
 export default MapContainer;
