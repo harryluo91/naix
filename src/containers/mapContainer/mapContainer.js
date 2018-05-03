@@ -74,36 +74,20 @@ class MapContainer extends Component {
           }, () => mapDataLoaded());
         })
       }
-      // if (map) {
-      //   const markerCoordsConvertor = new window.BMap.Convertor();
-      //   markerCoords.forEach((item) => {
-      //     const markerPos = new window.BMap.Point(item.x, item.y);
-      //     markerCoordsConvertor.translate([markerPos], 3, 5, (data) => {
-      //       let markersCopy = this.state.markers;
-      //       const marker = Object.create(new module.MapMarker(data.points[0]));
-      //       markersCopy = markersCopy.concat([marker]);
-      //       map.addOverlay(marker);
-      //       this.setState({
-      //         markers: markersCopy
-      //       })
-      //     })
-      //   }, this);
-      //   mapDataLoaded();
-      // }
     })
   }
 
   startLooping() {
     const { markers } = this.state;
     let currentMarkerIndex = 0;
-    let prevMarkerIndex = 0;
+    let prevMarkerIndex = -1;
     this.mapLooper = setInterval(() => {
       if (currentMarkerIndex === markers.length) {
         currentMarkerIndex = 0;
         prevMarkerIndex = markers.length - 1;
       }
-      markers[currentMarkerIndex].setActive.bind(this)();
-      // markers[prevMarkerIndex].setNonActive();
+      markers[currentMarkerIndex].setActive();
+      markers[prevMarkerIndex] && markers[prevMarkerIndex].setNonActive();
       currentMarkerIndex += 1;
       prevMarkerIndex = currentMarkerIndex - 1;
     }, 2000)
