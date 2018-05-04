@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Grid, Paper } from 'material-ui';
 import autoBind from 'react-autobind';
+
 import LineChart from '../../components/charts/lineChart';
 import BarChart from '../../components/charts/barChart';
 import SectionDivider from '../../components/sectionDivider/sectionDivider';
 import SectionHeader from '../../components/sectionHeader/sectionHeader';
 import MapContainer from '../mapContainer/mapContainer';
 import AppBarContainer from '../appBarContainer/appBarContainer';
+import SensorInfoContainer from '../sensorInfoContainer/sensorInfoContainer';
 import { BAIDU_MAP_API_KEY } from '../../utils/const';
 
 const baiduMapsApiUrl = `http://api.map.baidu.com/api?v=3.0&ak=${BAIDU_MAP_API_KEY}&callback=mapsApiLoaded`;
@@ -129,7 +131,9 @@ class LiveDashboardContainer extends Component {
               }
             </Grid>
             <Grid item xs={12} sm={4}>
-              {currentSensor.name}
+              <Paper>
+                <SensorInfoContainer currentSensor={currentSensor} />
+              </Paper>
             </Grid>
           </Grid>
         </div>

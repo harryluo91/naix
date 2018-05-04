@@ -1,0 +1,10 @@
+@import '../../styles/variables.scss';
+
+.sensor-info {
+  overflow: hidden;
+  height: $live-dashboard-map-height;
+
+  &__overview {
+    width: 100%;
+  }
+}
