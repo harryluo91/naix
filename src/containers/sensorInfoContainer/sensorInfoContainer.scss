@@ -3,8 +3,15 @@
 .sensor-info {
   overflow: hidden;
   height: $live-dashboard-map-height;
+  padding: 2px;
 
   &__overview {
     width: 100%;
+    padding: 10px
+  }
+
+  &__current-sensors {
+    width: 100%;
+    padding: 10px
   }
 }

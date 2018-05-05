@@ -131,9 +131,7 @@ class LiveDashboardContainer extends Component {
               }
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Paper>
-                <SensorInfoContainer currentSensor={currentSensor} />
-              </Paper>
+              <SensorInfoContainer currentSensor={currentSensor} />
             </Grid>
           </Grid>
         </div>

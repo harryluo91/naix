@@ -12,8 +12,13 @@ const style = {
     width: '100%',
     margin: '0px'
   },
-  gridItem: {
+  paperRoot: {
     width: '100%',
+    marginBottom: '10px'
+  },
+  paperRootLast: {
+    width: '100%',
+    flexGrow: 1
   }
 }
 
@@ -23,17 +28,16 @@ class SensorInfoContainer extends Component {
     return (
       <div className="sensor-info">
         <Grid container classes={{typeContainer: classes.gridContainer}} spacing={24} direction="column" justify="flex-start" alignItems="center">
-          <Grid item classes={{typeItem: classes.gridItem}}>
+          <Paper classes={{root: classes.paperRoot}}>
             <div className="sensor-info__overview">
               <SensorInfoOverview />
             </div>
-          </Grid>
-          <SectionDivider width={60}/>
-          <Grid item classes={{typeItem: classes.gridItem}}>
+          </Paper>
+          <Paper classes={{root: classes.paperRootLast}}>
             <div className="sensor-info__current-sensors">
               TEST
             </div>
-          </Grid>
+          </Paper>
         </Grid>
       </div>
     );
