@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Grid, Paper } from 'material-ui';
+import { Grid, Paper, withStyles } from 'material-ui';
 import autoBind from 'react-autobind';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import LineChart from '../../components/charts/lineChart';
 import BarChart from '../../components/charts/barChart';
-import SectionDivider from '../../components/sectionDivider/sectionDivider';
-import SectionHeader from '../../components/sectionHeader/sectionHeader';
 import MapContainer from '../mapContainer/mapContainer';
 import AppBarContainer from '../appBarContainer/appBarContainer';
 import SensorInfoContainer from '../sensorInfoContainer/sensorInfoContainer';
+import SensorInfoOverview from '../../components/liveDashboard/sensorInfoOverview';
+import SensorInfoDetails from '../../components/liveDashboard/sensorInfoDetails';
 import { BAIDU_MAP_API_KEY } from '../../utils/const';
 
 const baiduMapsApiUrl = `http://api.map.baidu.com/api?v=3.0&ak=${BAIDU_MAP_API_KEY}&callback=mapsApiLoaded`;
@@ -47,6 +48,19 @@ const SENSOR_INFO = [
     y: 35.386324
   }
 ]
+
+const style = {
+  gridContainer: {
+    height: '100%',
+    width: '100%',
+    margin: '0px'
+  },
+  paperRoot: {
+    width: '100%',
+    position: 'absolute',
+    height: '100%',
+  }
+}
 class LiveDashboardContainer extends Component {
 	constructor() {
 		super()
@@ -109,29 +123,50 @@ class LiveDashboardContainer extends Component {
 
   render() {
     const { mapsApiLoaded, currentSensor } = this.state;
+    const { classes } = this.props;
     return (
       <div className="live-dashboard">
         <AppBarContainer />
         <div className="live-dashboard__body">
           <Grid container spacing={24} justify="center" alignItems="center">
-            <Grid item xs={12} sm={8}>
-              {
-                mapsApiLoaded &&
-                  <Paper>
-                    <div id="live-dashboard-map">
-                      <MapContainer
-                        mapNodeId="live-dashboard-map"
-                        centerX={CENTER_COORDS.x}
-                        centerY={CENTER_COORDS.y}
-                        markerCoords={SENSOR_INFO}
-                        startLooping={this.startLooping}
-                      />
-                    </div>
-                  </Paper>
-              }
+            <Grid item xs={12}>
+              <SensorInfoOverview />
             </Grid>
-            <Grid item xs={12} sm={4}>
-              <SensorInfoContainer currentSensor={currentSensor} />
+            <Grid item xs={12}>
+              <Grid container spacing={16} justify="center" alignItems="flex-start">
+                <Grid item xs={12} sm={8}>
+                  {
+                    mapsApiLoaded &&
+                      <Paper>
+                        <div id="live-dashboard-map">
+                          <MapContainer
+                            mapNodeId="live-dashboard-map"
+                            centerX={CENTER_COORDS.x}
+                            centerY={CENTER_COORDS.y}
+                            markerCoords={SENSOR_INFO}
+                            startLooping={this.startLooping}
+                          />
+                        </div>
+                      </Paper>
+                  }
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <div className="live-dashboard__current-sensor">
+                    <ReactCSSTransitionGroup
+                      className="live-dashboard__current-sensors-transitions-wrapper"
+                      transitionName="live-dashboard-sensor-info-container"
+                      transitionEnterTimeout={500}
+                      transitionLeaveTimeout={500}>
+                      <Paper key={currentSensor.name} classes={{root: classes.paperRoot}}>
+                        <div className="live-dashboard__current-sensors">
+                          <SensorInfoDetails currentSensor={ currentSensor }/>
+                        </div>
+                      </Paper>
+                    </ReactCSSTransitionGroup>
+                  </div>
+                  {/* <SensorInfoContainer currentSensor={currentSensor} /> */}
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </div>
@@ -140,4 +175,4 @@ class LiveDashboardContainer extends Component {
   }
 }
 
-export default LiveDashboardContainer;
+export default withStyles(style)(LiveDashboardContainer);

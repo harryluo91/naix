@@ -39,7 +39,7 @@ class SensorInfoContainer extends Component {
     const { currentSensor, classes } = this.props;
     return (
       <div className="sensor-info">
-        <Grid container classes={{typeContainer: classes.gridContainer}} spacing={24} direction="column" justify="flex-start" alignItems="center">
+        <Grid container classes={{container: classes.gridContainer}} spacing={24} direction="column" justify="flex-start" alignItems="center">
           <Paper classes={{root: classes.paperRoot}}>
             <div className="sensor-info__overview">
               <SensorInfoOverview />

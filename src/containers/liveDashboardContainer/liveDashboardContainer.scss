@@ -10,6 +10,35 @@
     position: relative;
     height: calc(100% - #{$app-bar-height});
   }
+
+  &__current-sensor {
+    height: $live-dashboard-map-height;
+  }
+
+  &__current-sensors-transitions-wrapper {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: relative;
+
+    .live-dashboard-sensor-info-container-enter {
+      transform: translate(100%);
+    }
+
+    .live-dashboard-sensor-info-container-enter.live-dashboard-sensor-info-container-enter-active {
+      transform: translate(0%);
+      transition: transform 500ms ease-in-out;
+    }
+
+    .live-dashboard-sensor-info-container-leave {
+      opacity: 1;
+    }
+
+    .live-dashboard-sensor-info-container-leave.live-dashboard-sensor-info-container-leave-active {
+      opacity: 0.01;
+      transition: opacity 500ms ease-in-out;
+    }
+  }
   
   #live-dashboard-map {
     height: $live-dashboard-map-height;

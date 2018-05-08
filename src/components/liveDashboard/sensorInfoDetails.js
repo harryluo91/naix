@@ -9,12 +9,12 @@ class SensorInfoDetails extends Component {
       slideIn: true
     }
   }
-  componentDidMount() {
-    console.log('mount: ' + this.state.slideIn)
-  }
-  componentWillUnmount() {
-    console.log('unmount: ' + this.state.slideIn)
-  }
+  // componentDidMount() {
+  //   console.log('mount: ' + this.state.slideIn)
+  // }
+  // componentWillUnmount() {
+  //   console.log('unmount: ' + this.state.slideIn)
+  // }
   render() {
     const { currentSensor } = this.props;
     return (

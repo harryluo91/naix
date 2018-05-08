@@ -1,42 +1,42 @@
-@import '../../styles/variables.scss';
+// @import '../../styles/variables.scss';
 
-.sensor-info {
-  overflow: hidden;
-  height: $live-dashboard-map-height;
-  padding: 2px;
+// .sensor-info {
+//   overflow: hidden;
+//   height: $live-dashboard-map-height;
+//   padding: 2px;
 
-  &__overview {
-    width: 100%;
-    padding: 10px
-  }
+//   &__overview {
+//     width: 100%;
+//     padding: 10px
+//   }
 
-  &__current-sensors {
-    width: 100%;
-    padding: 10px
-  }
+//   &__current-sensors {
+//     width: 100%;
+//     padding: 10px
+//   }
 
-  &__current-sensors-transitions-wrapper {
-    width: 100%;
-    flex-grow: 1;
-    display: block;
-    position: relative;
+//   &__current-sensors-transitions-wrapper {
+//     width: 100%;
+//     flex-grow: 1;
+//     display: block;
+//     position: relative;
 
-    .session-info-container-enter {
-      transform: translate(100%);
-    }
+//     .session-info-container-enter {
+//       transform: translate(100%);
+//     }
 
-    .session-info-container-enter.session-info-container-enter-active {
-      transform: translate(0%);
-      transition: transform 500ms ease-in-out;
-    }
+//     .session-info-container-enter.session-info-container-enter-active {
+//       transform: translate(0%);
+//       transition: transform 500ms ease-in-out;
+//     }
 
-    .session-info-container-leave {
-      opacity: 1;
-    }
+//     .session-info-container-leave {
+//       opacity: 1;
+//     }
 
-    .session-info-container-leave.session-info-container-leave-active {
-      opacity: 0.01;
-      transition: opacity 500ms ease-in-out;
-    }
-  }
-}
+//     .session-info-container-leave.session-info-container-leave-active {
+//       opacity: 0.01;
+//       transition: opacity 500ms ease-in-out;
+//     }
+//   }
+// }

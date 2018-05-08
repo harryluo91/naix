@@ -4,8 +4,6 @@ import { Grid, Paper } from 'material-ui';
 import autoBind from 'react-autobind';
 import PropTypes from 'prop-types';
 
-// import MapMarker from '../../components/map/mapMarker';
-
 class MapContainer extends Component {
 	constructor() {
 		super()
