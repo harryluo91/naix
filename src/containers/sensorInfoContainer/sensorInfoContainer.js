@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Grid, Paper, withStyles } from 'material-ui';
+import { Grid, Paper, Slide, withStyles } from 'material-ui';
 import PropTypes from 'prop-types';
+import autoBind from 'react-autobind';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import SectionDivider from '../../components/sectionDivider/sectionDivider';
 import SensorInfoOverview from '../../components/liveDashboard/sensorInfoOverview';
+import SensorInfoDetails from '../../components/liveDashboard/sensorInfoDetails';
 
 const style = {
   gridContainer: {
@@ -18,11 +21,20 @@ const style = {
   },
   paperRootLast: {
     width: '100%',
-    flexGrow: 1
+    position: 'absolute',
+    height: '100%',
   }
 }
 
 class SensorInfoContainer extends Component {
+  constructor() {
+    super();
+    autoBind(this);
+    this.state = {
+      updatingSensor: false
+    }
+  }
+
   render() {
     const { currentSensor, classes } = this.props;
     return (
@@ -33,11 +45,17 @@ class SensorInfoContainer extends Component {
               <SensorInfoOverview />
             </div>
           </Paper>
-          <Paper classes={{root: classes.paperRootLast}}>
-            <div className="sensor-info__current-sensors">
-              TEST
-            </div>
-          </Paper>
+          <ReactCSSTransitionGroup
+            className="sensor-info__current-sensors-transitions-wrapper"
+            transitionName="session-info-container"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={500}>
+            <Paper key={currentSensor.name} classes={{root: classes.paperRootLast}}>
+              <div className="sensor-info__current-sensors">
+                <SensorInfoDetails currentSensor={ currentSensor }/>
+              </div>
+            </Paper>
+          </ReactCSSTransitionGroup>
         </Grid>
       </div>
     );

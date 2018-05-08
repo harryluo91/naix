@@ -14,4 +14,29 @@
     width: 100%;
     padding: 10px
   }
+
+  &__current-sensors-transitions-wrapper {
+    width: 100%;
+    flex-grow: 1;
+    display: block;
+    position: relative;
+
+    .session-info-container-enter {
+      transform: translate(100%);
+    }
+
+    .session-info-container-enter.session-info-container-enter-active {
+      transform: translate(0%);
+      transition: transform 500ms ease-in-out;
+    }
+
+    .session-info-container-leave {
+      opacity: 1;
+    }
+
+    .session-info-container-leave.session-info-container-leave-active {
+      opacity: 0.01;
+      transition: opacity 500ms ease-in-out;
+    }
+  }
 }
