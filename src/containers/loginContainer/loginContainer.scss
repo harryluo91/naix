@@ -1,8 +1,27 @@
 .login-container {
   height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 
   &__login-form {
     position: relative;
     top: 30%;
   }
+
+  &__form-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+    &--blur-filter {
+      height: 100%;
+      width: 100%;
+      background: inherit;
+      position: absolute;
+      box-shadow: inset 0 0 0 200px rgba(255,255,255,0.05);
+      filter: blur(10px);
+    }
+  }
 }
+
