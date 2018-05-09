@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import { Link } from "react-router-dom";
-import { Grid, Paper, Button } from 'material-ui';
+import { Grid, Paper, Button, withStyles } from 'material-ui';
 import { Form } from 'react-form';
 
 import TextInput from '../../components/form/textInput';
 import { storageManager, STORAGE_TYPES } from '../../utils/storageUtils';
 import HomeBG from '../../static/home-bg.jpg';
+
+const style = {
+  outerItem: {
+    position: 'relative'
+  },
+  outerPaper: {
+    position: 'relative',
+    backgroundColor: 'inherit'
+  }
+}
 
 class LoginContainer extends Component {
   constructor() {
@@ -37,14 +47,14 @@ class LoginContainer extends Component {
   
 
   render() {
+    const { classes } = this.props;
     return (
       <div className="login-container" style={{backgroundImage: `url(${HomeBG})`}}>
         <div className="login-container__login-form">
           <Grid container justify="center">
-            <Grid item xs={6}>
-              <div className="login-container__form-container--blur-filter"></div>
-              <div className="login-container__form-container">test</div>
-              {/* <Paper>
+            <Grid item xs={6} className={classes.outerItem}>
+              <Paper className={classes.outerPaper}>
+                <div className="login-container__form-container--blur-filter" style={{backgroundImage: `url(${HomeBG})`}}></div>
                 <div className="login-container__form-container">
                 <Form onSubmit={ this.handleSubmit }>
                   {
@@ -77,7 +87,7 @@ class LoginContainer extends Component {
                   }
                 </Form>
                 </div>
-              </Paper> */}
+              </Paper>
             </Grid>
           </Grid>
         </div>
@@ -86,4 +96,4 @@ class LoginContainer extends Component {
   }
 }
 
-export default LoginContainer;
+export default withStyles(style)(LoginContainer);
